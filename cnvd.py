@@ -32,7 +32,7 @@ class SqlitConn:
         self.db_conn.close()
 
 
-def GetCookies(url='http://www.cnvd.org.cn/'):
+def get_cookies(url='http://www.cnvd.org.cn/'):
     # 获取网站COOKie
     browser = webdriver.FirefoxOptions()
     driver = webdriver.Firefox(firefox_options=browser)
@@ -42,7 +42,7 @@ def GetCookies(url='http://www.cnvd.org.cn/'):
     driver.quit()
     return conn
 
-def Get_URL(url):
+def get_url(url):
     # 访问网站 获取网页信息
     global cnvd_cookie
     try:
@@ -52,7 +52,7 @@ def Get_URL(url):
         r.encoding = 'utf-8'
         if r.status_code != 200:
             time.sleep(5)
-            cnvd_cookie = GetCookies()
+            cnvd_cookie = get_cookies()
             r = requests.get(url, headers=header)
             r.encoding = 'utf-8'
             req = etree.HTML(r.content)
@@ -66,7 +66,7 @@ def Get_URL(url):
 
 def spider(url):
     # 提权网页信息
-    req = Get_URL(url)
+    req = get_url(url)
     items = req.xpath('/html/body//div[@class="tableDiv"]/table/tbody/tr')
     cnvd_cveid = 0
     for item in items:
@@ -128,7 +128,7 @@ if __name__ == '__main__':
     db = SqlitConn()
     cur = db.open_db()
     url = cur.execute('SELECT {} FROM ICSBUG '.format('BLANK_URL'))
-    cook = GetCookies()
+    cook = get_cookies()
     for i in url:
         http_url = ''.join(i)
         print(http_url)
