@@ -53,6 +53,7 @@ def get_url(url):
         if r.status_code != 200:
             time.sleep(5)
             cnvd_cookie = get_cookies()
+            header['cookie']=cnvd_cookie
             r = requests.get(url, headers=header)
             r.encoding = 'utf-8'
             req = etree.HTML(r.content)
