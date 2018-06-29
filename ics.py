@@ -26,9 +26,8 @@ class SqlitConn:
         self.db_conn.commit()
         self.db_conn.close()
 
-def http():
+def http(bash_url):
 
-    bash_url = 'http://ics.cnvd.org.cn/?title=&max=20&offset='
 
     r = requests.get(bash_url)
     print(r.status_code, '\n')
@@ -38,10 +37,8 @@ def http():
     max_num = req.xpath('/html/body//div[@class="pages clearfix"]/a[last()-1]/text()')
     max_num = ''.join(max_num)
     print("总共有页码", max_num)
+    return  max_num
 
-
-    t = MyThread(bash_url, max_num)
-    t.start()
 
 def sqider(bash_url, max_num):
 
@@ -80,4 +77,7 @@ class MyThread(threading.Thread):
 
 if __name__ == '__main__':
 
-    http()
+    bash_url = 'http://ics.cnvd.org.cn/?title=&max=20&offset='
+    max_num = http(bash_url)
+    t = MyThread(bash_url, max_num)
+    t.start()
