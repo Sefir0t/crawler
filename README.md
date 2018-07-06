@@ -5,4 +5,4 @@
 
 ics.py 爬工控漏洞的网址
 
-cnvd.py 爬工控漏洞的具体信息
+cnvd.py 爬CNVD漏洞详细信息
