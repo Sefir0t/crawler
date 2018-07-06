@@ -118,7 +118,7 @@ def spider(url):
         values = [cnvd_id, cnvd_time, cnvd_level, cnvd_impact, cnvd_cveid, cnvd_describe,
                   cnvd_reference, cnvd_solution, cnvd_patch, cnvd_update]
 
-        with open('test.csv', 'a', newline='', encoding='utf-8') as f:
+        with open('test.csv', 'a', newline='') as f:
             w = csv.writer(f)
             w.writerow(values)
     except Exception as e:
