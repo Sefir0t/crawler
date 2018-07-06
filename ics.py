@@ -25,7 +25,7 @@ class SqlitConn:
         self.db_conn.commit()
         self.db_conn.close()
 
-def http(bash_url):
+def http_num(bash_url):
 
     r = requests.get(bash_url)
     print(r.status_code, '\n')
@@ -37,9 +37,8 @@ def http(bash_url):
     print("总共有页码", max_num)
     return  max_num
 
-def sqider(i, bash_url, db_cur, db_conn, lock):
+def sqider(url, db_cur, db_conn, lock):
 
-    url = bash_url + str(i * 20)  # 组合完整网址
     r_get = requests.get(url)
     print(r_get.status_code, '\n')
     print(r_get.cookies, '\n')
@@ -80,12 +79,13 @@ def main():
 
     threads = []
     bash_url = 'http://ics.cnvd.org.cn/?title=&max=20&offset='
-    max_num = http(bash_url)
+    max_num = http_num(bash_url)
     num = range(0, int(max_num))
     lock = threading.Lock()
 
     for i in num:
-        t = MyThread(sqider, (i, bash_url, db_cur, db_conn, lock), sqider.__name__)
+        url = bash_url + str(i * 20)  # 组合完整网址
+        t = MyThread(sqider, (url, db_cur, db_conn, lock), sqider.__name__)
         threads.append(t)
 
     for i in num:
